@@ -2,7 +2,7 @@
 *Gavin, Rachel, Uthrash, Ivanna*
 
 ## Idea One
-This is where our first group idea will go.
+Weather API and location with users on web app to send a daily update on the forecast and what to wear.
 
 ## Idea Two
-This is where our second group idea will go.
+A route mapper based on a "scenic" route, maybe through
