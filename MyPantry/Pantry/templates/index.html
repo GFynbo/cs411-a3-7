@@ -1,9 +1,15 @@
 
 <h1>Search</h1>
-<form>
+<form action="/pantry/" method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Search" />
 </form>
 <h2>Yummly API</h2>
 <p>You searched for: <strong>{{ query }}</strong>.</p>
+<hr>
+{% for match in matches %}
+<p>Recipe: <strong><span style="color: red;">{{ match.recipeName }}</span></strong></p>
+<p>Ingredients: <br> <strong>{% for igen in match.ingredients %}<span style="color: gray;"> - {{ igen }}</span><br>{% endfor %}</strong></p>
+<hr>
+{% endfor %}
