@@ -1,6 +1,9 @@
-{% extends 'base.html' %}
 
-{% block content %}
-  <h2>Yummly API</h2>
-  <p>Your matches are <strong>{{ matches }}</strong></p>
-{% endblock %}
+<h1>Search</h1>
+<form>
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
+<h2>Yummly API</h2>
+<p>You searched for: <strong>{{ query }}</strong>.</p>
