@@ -1,10 +1,15 @@
 
+
+{% extend "MyPantry/base.html" %}
+{% block content %}
 <h1>Search</h1>
 <form action="/pantry/" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Search" />
 </form>
+
+{%if form%}
 <h2>Yummly API</h2>
 <p>You searched for: <strong>{{ query }}</strong>.</p>
 <hr>
