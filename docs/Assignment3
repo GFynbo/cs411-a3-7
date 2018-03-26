@@ -1,0 +1,5 @@
+The Technology stack we chose is Django, based on python with a server included. We considered the mean stack - mongo, express, angular,  and node.
+We also considered the mern stack - mongo, express, react, and node. 
+Django was chosen because everyone on the team has experience utilizing Python. 
+Django allows us to use a model view controller framework type. This framework allows an efficient way to separate components.  
+Django also allows us to work with a relational data base as opposed to non relational database. 
