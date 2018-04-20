@@ -17,7 +17,6 @@ def index(request):
         if form.is_valid():
             query = form.cleaned_data['query']
             query_string = 'http://api.yummly.com/v1/api/recipes?&_app_id=' + str(settings.APP_ID) + '&_app_key=' + str(settings.APP_KEY) + '&q=' + query
-            print(query_string)
             response = requests.get(query_string)
             pantrydata = response.json()
             return render(
