@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -22,8 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '6&)*$n)#_pwwbm1p#u%ceti9d^4$w*a+!d02rln-c@2$zsf!b^'
 
-APP_ID = os.environ.get('APP_ID')
-APP_KEY = os.environ.get('APP_KEY')
+APP_ID = os.getenv("APP_ID")
+APP_KEY = os.getenv("APP_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
