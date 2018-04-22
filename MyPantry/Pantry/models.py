@@ -18,11 +18,12 @@ class IngredientManager(models.Manager):
         return Ingredient.objects.get(name=ingredient)
 
     def add_ingredient(ingredient_name):
-        if check_ingredient(ingredient_name):
+        try:
+            Ingredient.objects.get(name=ingredient_name)
+            print("Ingredient already exists: " + str(ingredient_name))
+        except:
             new_ingredient = Ingredient(name=ingredient_name, category=ingredient_name)
             new_ingredient.save()
-        else:
-            print("Ingredient already exists")
 
 class Ingredient(models.Model):
     """ Ingredient is a unique model to describe and define ingredients """

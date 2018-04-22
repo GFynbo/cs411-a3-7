@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.conf import settings
 
 from .forms import RecipeSearchForm
+from .models import IngredientManager
 
 import requests
 
@@ -19,6 +20,12 @@ def index(request):
             query_string = 'http://api.yummly.com/v1/api/recipes?&_app_id=' + str(settings.APP_ID) + '&_app_key=' + str(settings.APP_KEY) + '&q=' + query
             response = requests.get(query_string)
             pantrydata = response.json()
+            for recipe in pantrydata['matches']:
+                for ingredient in recipe['ingredients']:
+                    print(ingredient)
+                    IngredientManager.add_ingredient(ingredient)
+
+            print(IngredientManager.total_ingredients())
             return render(
                 request,
                 'index.html',
