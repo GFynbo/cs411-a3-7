@@ -24,6 +24,9 @@ SECRET_KEY = '6&)*$n)#_pwwbm1p#u%ceti9d^4$w*a+!d02rln-c@2$zsf!b^'
 
 APP_ID = os.getenv("APP_ID")
 APP_KEY = os.getenv("APP_KEY")
+DATABASE_NAME = os.getenv("DATABASE_NAME")
+DATABASE_USER = os.getenv("DATABASE_USER")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -80,8 +83,12 @@ WSGI_APPLICATION = 'MyPantry.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': DATABASE_NAME,
+        'USER': DATABASE_USER,
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST': '',
+        'PORT': '',
     }
 }
 
