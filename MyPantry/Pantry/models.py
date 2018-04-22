@@ -9,17 +9,20 @@ class IngredientManager(models.Manager):
         ingredients = Ingredient.objects.all()
         return len(ingredients)
 
-    def get_matches(user, deny=False):
-        # get matches for the match page
-        matches = Match.objects.filter(user=user, deny=deny)
-        return matches
+    def get_ingredients():
+        # gets all ingredients
+        ingredients = Ingredient.objects.all()
+        return ingredients
 
     def check_ingredient(ingredient):
-        return Match.objects.filter(user=user, restaurant=restaurant)
+        return Ingredient.objects.get(name=ingredient)
 
-    def add_ingredient(ingredient, restaurant, deny=False):
-        new_match = Match(user=user, restaurant=restaurant, deny=deny)
-        new_match.save()
+    def add_ingredient(ingredient_name):
+        if check_ingredient(ingredient_name):
+            new_ingredient = Ingredient(name=ingredient_name, category=ingredient_name)
+            new_ingredient.save()
+        else:
+            print("Ingredient already exists")
 
 class Ingredient(models.Model):
     """ Ingredient is a unique model to describe and define ingredients """
