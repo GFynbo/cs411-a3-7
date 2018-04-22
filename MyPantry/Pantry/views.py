@@ -36,3 +36,6 @@ def index(request):
         form = RecipeSearchForm()
 
     return render(request, 'index.html', {'form': form})
+
+def ingredients(request):
+    return render(request, 'ingredients.html', {'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})

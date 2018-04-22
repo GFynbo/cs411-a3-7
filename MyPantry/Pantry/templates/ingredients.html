@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+<h1>Ingredient List</h1>
+{% if ingredients %}
+<h2>MyPantry Possible Ingredients: {% if total_ingredients %}{{total_ingredients}}{% endif %}</h2>
+<table>
+  <tr>
+    <th>Ingredient Name</th>
+    <th>Category</th>
+  </tr>
+{% for ingredient in ingredients %}
+  <tr>
+    <td>{{ ingredient.name }}</td>
+    <td>{{ ingredient.category }}</td>
+  </tr>
+{% endfor %}
+</table>
+{% else %}
+<p>No Ingredients :(</p>
+{% endif %}
+{% endblock %}

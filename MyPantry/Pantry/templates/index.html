@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 <h1>Search</h1>
 {% if form %}
 <form action="/pantry/" method="post">
@@ -20,3 +23,4 @@
 <hr>
 {% endfor %}
 {% endif %}
+{% endblock %}

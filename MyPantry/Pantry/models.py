@@ -11,7 +11,7 @@ class IngredientManager(models.Manager):
 
     def get_ingredients():
         # gets all ingredients
-        ingredients = Ingredient.objects.all()
+        ingredients = Ingredient.objects.all().order_by('name')
         return ingredients
 
     def check_ingredient(ingredient):
