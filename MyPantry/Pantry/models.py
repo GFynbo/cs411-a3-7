@@ -29,3 +29,34 @@ class Ingredient(models.Model):
     """ Ingredient is a unique model to describe and define ingredients """
     name = models.CharField(max_length=100, help_text="Enter the ingredient name (e.g. Salt or Onion)")
     category = models.CharField(max_length=100, default="None", help_text="Enter the ingredient category (e.g. Spice or Meat)")
+
+
+# Create your models here.
+class RecipeManager(models.Manager):
+    """ Ingredient Manager is just a manager model to add, delete, and search
+        for ingredients in the database.
+    """
+    def total_recipes():
+        recipes = Recipe.objects.all()
+        return len(recipes)
+
+    def get_recipes():
+        # gets all ingredients
+        recipes = Recipe.objects.all().order_by('name')
+        return recipes
+
+    def check_recipe(recipe_name):
+        return Recipe.objects.get(name=recipe_name)
+
+    def add_recipe(recipe_name):
+        try:
+            Recipe.objects.get(name=recipe_name)
+            print("Ingredient already exists: " + (recipe_name).encode('utf-8'))
+        except:
+            new_recipe = Recipe(name=recipe_name, category="None")
+            new_recipe.save()
+
+class Recipe(models.Model):
+    """ Ingredient is a unique model to describe and define ingredients """
+    name = models.CharField(max_length=100, help_text="Enter the ingredient name (e.g. Salt or Onion)")
+    category = models.CharField(max_length=100, default="None", help_text="Enter the ingredient category (e.g. Spice or Meat)")
