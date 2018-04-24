@@ -14,12 +14,12 @@
     <body>
         <form class="border: 0;" action="/pantry/" method="post">
             <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-                <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/pantry">MyPantry</a>
+                <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">MyPantry</a>
                 {%csrf_token%}
                 {{form.query}}
                 <ul class="navbar-nav px-3">
                     <li class="nav-item text-nowrap">
-                        <a href="/pantry/login/" class="nav-link">Sign in</a>
+                        <a href="{% url 'login' %}" class="nav-link">Sign in</a>
                     </li>
                 </ul>
             </nav>
@@ -31,27 +31,27 @@
               <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                   <li class="nav-item">
-                    <a class="nav-link active" href="/pantry">
+                    <a class="nav-link {% if activate == 'index' %}active{% endif %}" href="{% url 'index' %}">
                       <span data-feather="home"></span>
-                      Pantry <span class="sr-only">(current)</span>
+                      Pantry
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/pantry/recipes">
+                    <a class="nav-link {% if activate == 'home' %}active{% endif %}" href="#">
+                      <span data-feather="file"></span>
+                      My Recipes
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if activate == 'recipes' %}active{% endif %}" href="{% url 'recipes' %}">
                       <span data-feather="book"></span>
                       All Recipes
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/pantry/ingredients">
+                    <a class="nav-link {% if activate == 'ingredients' %}active{% endif %}" href="{% url 'ingredients' %}">
                       <span data-feather="shopping-cart"></span>
                       All Ingredients
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
-                      <span data-feather="users"></span>
-                      Friends
                     </a>
                   </li>
                 </ul>

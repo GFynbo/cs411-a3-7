@@ -40,3 +40,9 @@ def index(request):
 
 def ingredients(request):
     return render(request, 'ingredients.html', {'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})
+
+def login(request):
+    return render(request, 'login.html', {'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})
+
+def recipes(request):
+    return render(request, 'recipes.html', {'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})
