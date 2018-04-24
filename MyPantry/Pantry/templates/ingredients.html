@@ -1,36 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<style>
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-</style>
 <h1>Ingredient List</h1>
 {% if ingredients %}
 <h2>MyPantry Possible Ingredients: {% if total_ingredients %}{{total_ingredients}}{% endif %}</h2>
-<table>
-  <tr>
-    <th>Ingredient Name</th>
-    <th>Category</th>
-  </tr>
+<table class="table">
+  <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Ingredient Name</th>
+        <th scope="col">Category</th>
+    </tr>
+  </thead>
+  <tbody>
 {% for ingredient in ingredients %}
   <tr>
+    <td scope="row">{{ ingredient.id }}</td>
     <td>{{ ingredient.name }}</td>
     <td>{{ ingredient.category }}</td>
-  </tr>
+    </tr>
 {% endfor %}
 </table>
 {% else %}

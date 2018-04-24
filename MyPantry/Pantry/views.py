@@ -22,14 +22,15 @@ def index(request):
             pantrydata = response.json()
             for recipe in pantrydata['matches']:
                 for ingredient in recipe['ingredients']:
-                    print(ingredient)
+                    print((ingredient).encode('utf-8'))
                     IngredientManager.add_ingredient(ingredient)
 
             print(IngredientManager.total_ingredients())
+            form = RecipeSearchForm()
             return render(
                 request,
                 'index.html',
-                {'query': pantrydata['criteria']['q'], 'matches': pantrydata['matches']}
+                {'query': pantrydata['criteria']['q'], 'matches': pantrydata['matches'], 'form': form}
             )
     # if a GET (or any other method) we'll create a blank form
     else:
