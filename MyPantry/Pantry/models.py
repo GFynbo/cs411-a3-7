@@ -60,3 +60,30 @@ class Recipe(models.Model):
     """ Ingredient is a unique model to describe and define ingredients """
     name = models.CharField(max_length=100, help_text="Enter the ingredient name (e.g. Salt or Onion)")
     category = models.CharField(max_length=100, default="None", help_text="Enter the ingredient category (e.g. Spice or Meat)")
+
+class MiniRecipeManager(models.Manager):
+    """ Manager for the MiniRecipe class """
+    def total_mini_recipes():
+        recipes = MiniRecipe.objects.all()
+        return len(recipes)
+
+    def get_mini_recipes():
+        # gets all ingredients
+        recipes = MiniRecipe.objects.all().order_by('name')
+        return recipes
+
+    def check_mini_recipe(recipe_id_name):
+        return MiniRecipe.objects.filter(recipe_id=recipe_id_name).exists()
+
+    def add_mini_recipe(recipe_name, recipe_id_name, recipe_img_url):
+        if MiniRecipeManager.check_mini_recipe(recipe_id_name):
+            print("MiniRecipe already exists: " + (recipe_id_name))
+        else:
+            new_recipe = MiniRecipe(name=recipe_name, recipe_id=recipe_id_name, img_url=recipe_img_url)
+            new_recipe.save()
+
+class MiniRecipe(models.Model):
+    """ A class containing a recipe name, ID and URL for picture """
+    name = models.CharField(max_length=100)
+    recipe_id = models.CharField(max_length=200)
+    img_url = models.CharField(max_length=350)

@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.conf import settings
 
 from .forms import RecipeSearchForm
-from .models import IngredientManager
+from .models import IngredientManager, MiniRecipeManager
 
 import requests
 
@@ -17,14 +17,13 @@ def index(request):
         # check whether it's valid:
         if form.is_valid():
             query = form.cleaned_data['query']
-            query_string = 'http://api.yummly.com/v1/api/recipes?&_app_id=' + str(settings.APP_ID) + '&_app_key=' + str(settings.APP_KEY) + '&q=' + query
+            query_string = 'http://api.yummly.com/v1/api/recipes?&_app_id=' + str(settings.APP_ID) + '&_app_key=' + str(settings.APP_KEY) + '&q=' + query + "&requirePictures=true"
             response = requests.get(query_string)
             pantrydata = response.json()
             for recipe in pantrydata['matches']:
+                MiniRecipeManager.add_mini_recipe(recipe['recipeName'], recipe['id'], recipe['imageUrlsBySize']['90'])
                 for ingredient in recipe['ingredients']:
-                    print((ingredient).encode('utf-8'))
                     IngredientManager.add_ingredient(ingredient)
-
             print(IngredientManager.total_ingredients())
             form = RecipeSearchForm()
             return render(
@@ -45,4 +44,7 @@ def login(request):
     return render(request, 'login.html', {'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})
 
 def recipes(request):
-    return render(request, 'recipes.html', {'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})
+    return render(request, 'recipes.html', {'recipeList': MiniRecipeManager.get_mini_recipes()})
+
+def myrecipes(request):
+    return render(request, 'myrecipes.html', {})

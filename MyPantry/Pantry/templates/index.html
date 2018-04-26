@@ -1,23 +1,38 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h1">Dashboard{% if matches %} &mdash; You searched for: <strong>{{ query }}</strong>{% endif %}</h1>
+    <h1 class="h1">Search{% if matches %} &mdash; You searched for: <strong>{{ query }}</strong>{% endif %}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-        <button class="btn btn-sm btn-outline-secondary">Share</button>
-        <button class="btn btn-sm btn-outline-secondary">Export</button>
+        <button class="btn btn-sm btn-outline-secondary">Add custom</button>
+        <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#jsonModal">Show JSON</button>
         </div>
-        <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-        <span data-feather="calendar"></span>
-        This week
-        </button>
     </div>
 </div>
-    {% if matches %}
-    {% for match in matches %}
-    <h4 class="h4"><strong><span style="color: red;">{{ match.recipeName }}</span></strong></h4>
-    <p class="p">Ingredients: <br> <strong>{% for igen in match.ingredients %}<span style="color: gray;"> - {{ igen }}</span><br>{% endfor %}</strong></p>
-    <hr>
+{% if matches %}
+<div class="card-columns">
+{% for match in matches %}
+<div class="card" style="width: 18rem;">
+  {% for name, img_url in match.imageUrlsBySize.items %}
+  <img class="card-img-top" src="{{ img_url }}" alt="Card image cap">
+  {% endfor %}
+  <div class="card-body">
+    <h5 class="card-title">{{ match.recipeName }}</h5>
+  </div>
+  <ul class="list-group list-group-flush">
+    {% for ingre in match.ingredients %}
+    <li class="list-group-item">{{ ingre }}</li>
     {% endfor %}
-    {% endif %}
+  </ul>
+  <div class="card-body text-center">
+    <form action="/pantry/add_recipe/" method="post">
+        {% csrf_token %}
+        <button class="btn btn-primary"><span data-feather="plus"></span> Add recipe</button>
+    </form>
+  </div>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+
 {% endblock %}
