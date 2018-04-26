@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 from django.conf import settings
 
-from .forms import RecipeSearchForm
+from .forms import RecipeSearchForm, RecipeShowForm
 from .models import IngredientManager, MiniRecipeManager
 
 import requests
@@ -37,14 +37,43 @@ def index(request):
 
     return render(request, 'index.html', {'form': form})
 
+def pantry(request):
+    form = RecipeSearchForm()
+    return render(request, 'pantry.html', {'form': form, })
+
 def ingredients(request):
-    return render(request, 'ingredients.html', {'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})
+    form = RecipeSearchForm()
+    return render(request, 'ingredients.html', {'form': form, 'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})
 
 def login(request):
-    return render(request, 'login.html', {'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})
+    form = RecipeSearchForm()
+    return render(request, 'login.html', {'form': form, 'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})
 
 def recipes(request):
-    return render(request, 'recipes.html', {'recipeList': MiniRecipeManager.get_mini_recipes()})
+    form = RecipeSearchForm()
+    return render(request, 'recipes.html', {'form': form, 'recipeList': MiniRecipeManager.get_mini_recipes()})
 
 def myrecipes(request):
-    return render(request, 'myrecipes.html', {})
+    form = RecipeSearchForm()
+    return render(request, 'myrecipes.html', {'form': form, })
+
+def show_recipe(request):
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = RecipeShowForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            recipe = form.cleaned_data['recipe_id']
+            query_string = 'http://api.yummly.com/v1/api/recipe/' + recipe + '?&_app_id=' + str(settings.APP_ID) + '&_app_key=' + str(settings.APP_KEY)
+            response = requests.get(query_string)
+            pantrydata = response.json()
+            form = RecipeSearchForm()
+            return render(
+                request,
+                'show_recipe.html',
+                {'recipe': pantrydata, 'big_image_url':pantrydata['images'][0]['hostedLargeUrl'], 'form': form}
+            )
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = RecipeSearchForm()
+    return render(request, 'show_recipe.html', {'form': form, 'recipeList': MiniRecipeManager.get_mini_recipes()})

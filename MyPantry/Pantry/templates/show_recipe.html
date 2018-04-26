@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h1">Recipe{% if recipe %} &mdash; {{ recipe.name }}{% endif %}</h1>
+</div>
+{% if recipe %}
+<div class="card text-center">
+  <div class="card-header">
+    {{ recipe.name }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ recipe.name }}</h5>
+    <p>Yield: {{ recipe.yield }}</p>
+    <p>Rating: {{ recipe.rating }}/5</p>
+    <p>Total time: {{ recipe.totalTime }}</p>
+    <p class="primary">Ingredients: </p>
+    <ul class="list-group list-group-flush">
+        {% for ingre in recipe.ingredientLines %}
+        <li class="list-group-item">{{ ingre }}</li>
+        {% endfor %}
+    </ul>
+  </div>
+  <img class="card-img-bottom" src="{{ big_image_url }}" alt="Food pic">
+  <div class="card-footer text-muted">
+    Source: <a href="{{recipe.source.sourceRecipeUrl}}">{{ recipe.source.sourceDisplayName }}</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

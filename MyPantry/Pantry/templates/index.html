@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h1">Search{% if matches %} &mdash; You searched for: <strong>{{ query }}</strong>{% endif %}</h1>
+    <h1 class="h1">Home{% if matches %} &mdash; You searched for: <strong>{{ query }}</strong>{% endif %}</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
         <button class="btn btn-sm btn-outline-secondary">Add custom</button>
@@ -25,8 +25,9 @@
     {% endfor %}
   </ul>
   <div class="card-body text-center">
-    <form action="/pantry/add_recipe/" method="post">
+    <form action="/pantry/show_recipe/" method="post">
         {% csrf_token %}
+        <input type="hidden" name="recipe_id" value="{{ match.id }}" hidden>
         <button class="btn btn-primary"><span data-feather="plus"></span> Add recipe</button>
     </form>
   </div>

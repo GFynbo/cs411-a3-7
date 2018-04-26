@@ -72,6 +72,13 @@ class MiniRecipeManager(models.Manager):
         recipes = MiniRecipe.objects.all().order_by('name')
         return recipes
 
+    def get_mini_recipe(recipe_id_name):
+        # gets all ingredients
+        if MiniRecipeManager.check_mini_recipe(recipe_id_name):
+            return MiniRecipe.objects.get(recipe_id=recipe_id_name)
+        else:
+            return False
+
     def check_mini_recipe(recipe_id_name):
         return MiniRecipe.objects.filter(recipe_id=recipe_id_name).exists()
 

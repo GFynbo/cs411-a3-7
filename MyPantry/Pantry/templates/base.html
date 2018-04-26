@@ -30,15 +30,21 @@
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
               <div class="sidebar-sticky">
                 <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link {% if activate == 'index' %}active{% endif %}" href="{% url 'index' %}">
+                        <span data-feather="home"></span>
+                        Home
+                      </a>
+                    </li>
                   <li class="nav-item">
-                    <a class="nav-link {% if activate == 'index' %}active{% endif %}" href="{% url 'index' %}">
-                      <span data-feather="home"></span>
+                    <a class="nav-link {% if activate == 'pantry' %}active{% endif %}" href="{% url 'pantry' %}">
+                      <span data-feather="box"></span>
                       Pantry
                     </a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link {% if activate == 'myrecipes' %}active{% endif %}" href="{% url 'myrecipes' %}">
-                      <span data-feather="file"></span>
+                      <span data-feather="book-open"></span>
                       My Recipes
                     </a>
                   </li>

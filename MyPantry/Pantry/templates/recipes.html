@@ -16,9 +16,9 @@
   <tbody>
 {% for recipe in recipeList %}
   <tr>
-    <td scope="row">{{ recipe.recipe_id }}</td>
+    <td scope="row">{{ recipe.recipe_id | truncatechars:50 }}</td>
     <td>{{ recipe.name }}</td>
-    <td>{{ recipe.img_url }}</td>
+    <td>{{ recipe.img_url | truncatechars:25 }}</td>
     </tr>
 {% endfor %}
 </table>
