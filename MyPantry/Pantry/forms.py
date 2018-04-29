@@ -5,3 +5,6 @@ class RecipeSearchForm(forms.Form):
 
 class RecipeShowForm(forms.Form):
     recipe_id = forms.CharField()
+
+class AddIngredientForm(forms.Form):
+    name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'avocado, etc'}))
