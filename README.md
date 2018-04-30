@@ -11,6 +11,7 @@ pip install dotenv
 Run Instructions 
 ----
 Set up PostgreSQL 
+-
 Python manage.py migrate
 Python manage.py runserver
 Run on http://127.0.0.1:8000/
