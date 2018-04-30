@@ -35,7 +35,7 @@ def index(request):
     else:
         form = RecipeSearchForm()
 
-    return render(request, 'index.html', {'form': form, 'form2':form2})
+    return render(request, 'index.html', {'form': form})
 
 def pantry(request):
     if request.method == 'POST':
