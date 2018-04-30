@@ -43,6 +43,7 @@ def index(request):
 
     return render(request, 'index.html', {'form': form})
 
+@login_required
 def pantry(request):
     if request.method == 'POST':
         form2 = AddIngredientForm(request.POST)
@@ -58,6 +59,7 @@ def pantry(request):
     form = RecipeSearchForm()
     return render(request, 'pantry.html', {'form': form, 'form2':form2})
 
+@login_required
 def ingredients(request):
     form = RecipeSearchForm()
     return render(request, 'ingredients.html', {'form': form, 'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})
@@ -66,14 +68,17 @@ def login(request):
     form = RecipeSearchForm()
     return render(request, 'login.html', {'form': form, 'ingredients': IngredientManager.get_ingredients(), 'total_ingredients': IngredientManager.total_ingredients()})
 
+@login_required
 def recipes(request):
     form = RecipeSearchForm()
     return render(request, 'recipes.html', {'form': form, 'recipeList': MiniRecipeManager.get_mini_recipes()})
 
+@login_required
 def myrecipes(request):
     form = RecipeSearchForm()
     return render(request, 'myrecipes.html', {'form': form, })
 
+@login_required
 def show_recipe(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:

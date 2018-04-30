@@ -15,7 +15,10 @@
             <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
                 <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'index' %}">MyPantry</a>
                 {%csrf_token%}
+                {% if user.is_authenticated %}
                 {{form.query}}
+                {% else %}
+                {% endif %}
                 <ul class="navbar-nav px-3">
                     <li class="nav-item text-nowrap">
                         {% if user.is_authenticated %}
@@ -31,6 +34,7 @@
         <div class="container-fluid">
           <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            {% if user.is_authenticated %}
               <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -72,6 +76,7 @@
                   </a>
                 </h6>
               </div>
+              {% endif %}
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                 {% block content %}
