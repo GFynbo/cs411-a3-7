@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class IngredientManager(models.Manager):
@@ -94,3 +95,30 @@ class MiniRecipe(models.Model):
     name = models.CharField(max_length=100)
     recipe_id = models.CharField(max_length=200)
     img_url = models.CharField(max_length=350)
+
+class MyIngredientManager(models.Manager):
+    """ manager for the myingredient model """
+    def total_myingredients():
+        recipes = MyIngredient.objects.all()
+        return len(recipes)
+
+    def get_myingredients():
+        # gets all ingredients
+        recipes = MyIngredient.objects.all().order_by('name')
+        return recipes
+
+    def check_myingredient(recipe_id_name):
+        return MyIngredient.objects.filter(name=recipe_id_name).exists()
+
+    def add_myingredient(user, ingredient_name):
+        if MyIngredientManager.check_mini_recipe(recipe_id_name):
+            print("MiniRecipe already exists: " + (recipe_id_name))
+        else:
+            new_recipe = MyIngredient(name=recipe_name, recipe_id=recipe_id_name, img_url=recipe_img_url)
+            new_recipe.save()
+
+class MyIngredient(models.Model):
+    """ model to represent the ingredients for an individual """
+    user = models.ForeignKey(User, related_name="myingredient_user")
+    ingredient = models.ForeignKey(Ingredient, related_name="myingredient_ing")
+    amount = models.DecimalField(max_digits=6, decimal_places=2, default=0)

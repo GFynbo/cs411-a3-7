@@ -4,10 +4,37 @@
     <h1 class="h1">My Pantry</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-        <button class="btn btn-sm btn-outline-secondary">Add custom</button>
+        <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#addIngredientModal">Add custom</button>
         <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#jsonModal">Show JSON</button>
         </div>
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="addIngredientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addIngredientModalTitle">Add a new ingredient</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/pantry/my_pantry" method="post">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label for="ingredientName" class="col-sm-2 col-form-label">Ingredient</label>
+                <div class="col-sm-10">
+                    {{form2.name}}
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success" name="Submit">Add</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
