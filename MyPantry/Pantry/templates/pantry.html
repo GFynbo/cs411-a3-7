@@ -4,8 +4,7 @@
     <h1 class="h1">My Pantry</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-        <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#addIngredientModal">Add custom</button>
-        <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#jsonModal">Show JSON</button>
+        <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#addIngredientModal">Add ingredient</button>
         </div>
     </div>
 </div>
@@ -13,12 +12,24 @@
 {% if matches %}
 <div class="card-columns">
 {% for match in matches %}
-<div class="card" style="width: 18rem;">
+<div class="card">
   <div class="card-body">
     <h5 class="card-title">{{ match.ingredient.name }}</h5>
   </div>
   <div class="card-body text-center">
-    Amount: {{ match.amount }} {{ match.measurement }} <button class="btn btn-primary" data-toggle="modal" data-target="#updateQuantity" data-id="{{ match.id }}" data-measurement="{{ match.measurement }}"><span data-feather="edit"></span></button>
+      <form action="/pantry/update_ingredient/" method="post">
+          <div class="form-group">
+              {% csrf_token %}
+              <input type="hidden" value="{{ match.ingredient.name }}" name="id" hidden>
+              <div class="form-group">
+                  <input type="number" class="form-control form-control-sm" value="{{ match.amount }}" name="amount">
+              </div>
+              <div class="form-group">
+                  <input type="text" class="form-control form-control-sm" value="{{ match.measurement }}" name="measurement">
+              </div>
+              <button class="btn btn-primary" type="submit"><span data-feather="save"></span> Save</button>
+          </div>
+      </form>
   </div>
 </div>
 {% endfor %}
@@ -51,43 +62,5 @@
       </div>
     </div>
   </div>
-
-  <!-- Modal -->
-  <div class="modal fade" id="updateQuantity" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addIngredientModalTitle">Update </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form action="/pantry/update_ingredient" method="post">
-              {% csrf_token %}
-              <div class="form-group row">
-                  <label for="ingredientName" class="col-sm-2 col-form-label">Amount</label>
-                  <div class="col-sm-10">
-                      {{form3.amount}}
-                  </div>
-              </div>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-success" name="Submit">Add</button>
-              </div>
-          </form>
-        </div>
-      </div>
-    </div>
 </div>
-<script>
-$('#updateQuantity').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var restPk = button.data('id') // Extract info from data-* attributes
-  var restName = button.data('measurement') // Extract info from data-* attributes
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-  var modal = $(this)
-  modal.find('.modal-title h5').text('Update ' + restName + '?')
-})
-</script>
 {% endblock %}

@@ -22,7 +22,7 @@
                 <ul class="navbar-nav px-3">
                     <li class="nav-item text-nowrap">
                         {% if user.is_authenticated %}
-                            Welcome, {{ user }}!
+                            <a class="nav-link">Welcome, {{ user }}!</a>
                         {% else %}
                         <a href="{% url 'login' %}" class="nav-link">Sign in</a>
                         {% endif %}
@@ -44,7 +44,7 @@
                       </a>
                     </li>
                   <li class="nav-item">
-                    <a class="nav-link {% if activate == 'pantry' %}active{% endif %}" href="{% url 'pantry' %}">
+                    <a class="nav-link {% if active == 'pantry' %}active{% endif %}" href="{% url 'pantry' %}">
                       <span data-feather="box"></span>
                       Pantry
                     </a>
@@ -65,6 +65,12 @@
                     <a class="nav-link {% if activate == 'ingredients' %}active{% endif %}" href="{% url 'ingredients' %}">
                       <span data-feather="shopping-cart"></span>
                       All Ingredients
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if activate == 'logout_view' %}active{% endif %}" href="{% url 'logout_view' %}">
+                      <span data-feather="log-out"></span>
+                      Logout
                     </a>
                   </li>
                 </ul>

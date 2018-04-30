@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404, render, redirect, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
+from django.contrib.auth import logout
 
 from django.conf import settings
 
 from .forms import AddIngredientForm, RecipeSearchForm, RecipeShowForm, UpdateMyIngredient
-from .models import IngredientManager, MiniRecipeManager, MyIngredientManager
+from .models import Ingredient, IngredientManager, MiniRecipeManager, MyIngredient, MyIngredientManager
 
 
 from django.contrib.auth.decorators import login_required
@@ -48,6 +49,7 @@ def pantry(request):
     if request.method == 'POST':
         form2 = AddIngredientForm(request.POST)
         form = RecipeSearchForm()
+        form3 = UpdateMyIngredient()
         if form2.is_valid():
             name = form2.cleaned_data['name']
             user_pk = request.user.pk
@@ -56,13 +58,33 @@ def pantry(request):
                 MyIngredientManager.add_myingredient(user_pk, name)
             else:
                 print("No ingredient found.")
-            return render(request, 'pantry.html', {'form': form, 'form2':form2, 'matches': MyIngredientManager.get_myingredients(user_pk)})
-    else:
-        form2 = AddIngredientForm()
+            return render(request, 'pantry.html', {'form': form, 'form2':form2, 'form3':form3, 'matches': MyIngredientManager.get_myingredients(user_pk)})
+    form2 = AddIngredientForm()
     form = RecipeSearchForm()
     form3 = UpdateMyIngredient()
     user_pk = request.user.pk
     return render(request, 'pantry.html', {'form': form, 'form2':form2, 'form3':form3, 'matches': MyIngredientManager.get_myingredients(user_pk)})
+
+@login_required
+def update_ingredient(request):
+    if request.method == 'POST':
+        form = UpdateMyIngredient(request.POST)
+        user_pk = request.user.pk
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            measurement = form.cleaned_data['measurement']
+            id = form.cleaned_data['id']
+            print(id)
+            if MyIngredientManager.check_myingredient(user_pk, id):
+                ing = MyIngredient.objects.get(user=request.user, ingredient=Ingredient.objects.get(name=id))
+                ing.amount = amount
+                ing.measurement = measurement
+                ing.save()
+                print(ing)
+                return redirect("/pantry/my_pantry/")
+        return redirect("/pantry/")
+    else:
+        return redirect("/pantry/")
 
 @login_required
 def ingredients(request):
@@ -126,3 +148,8 @@ def show_recipe(request):
     else:
         form = RecipeSearchForm()
     return render(request, 'show_recipe.html', {'form': form, 'recipeList': MiniRecipeManager.get_mini_recipes()})
+
+def logout_view(request):
+    """ logout of the account """
+    logout(request)
+    return redirect("/pantry/")

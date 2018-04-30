@@ -106,7 +106,7 @@ class MyIngredientManager(models.Manager):
         # gets all ingredients
         try:
             curr_user = User.objects.get(pk=user)
-            recipes = MyIngredient.objects.filter(user=curr_user)
+            recipes = MyIngredient.objects.filter(user=curr_user).order_by('ingredient')
             return recipes
         except:
             return []
@@ -114,7 +114,7 @@ class MyIngredientManager(models.Manager):
     def check_myingredient(user, recipe_id_name):
         try:
             curr_user = User.objects.get(pk=user)
-            curr_recp = Ingredient.objects.get(name=ingredient_name)
+            curr_recp = Ingredient.objects.get(name=recipe_id_name)
             return MyIngredient.objects.filter(user=curr_user, ingredient=curr_recp).exists()
         except:
             return False
