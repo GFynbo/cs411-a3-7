@@ -8,3 +8,7 @@ class RecipeShowForm(forms.Form):
 
 class AddIngredientForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'avocado, etc'}))
+
+class UpdateMyIngredient(forms.Form):
+    name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'avocado, etc'}))
+    amount = forms.DecimalField(widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : '3'}))

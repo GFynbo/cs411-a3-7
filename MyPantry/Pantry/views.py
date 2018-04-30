@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 from django.conf import settings
 
-from .forms import AddIngredientForm, RecipeSearchForm, RecipeShowForm
+from .forms import AddIngredientForm, RecipeSearchForm, RecipeShowForm, UpdateMyIngredient
 from .models import IngredientManager, MiniRecipeManager, MyIngredientManager
 
 
@@ -49,15 +49,20 @@ def pantry(request):
         form2 = AddIngredientForm(request.POST)
         form = RecipeSearchForm()
         if form2.is_valid():
-            if IngredientManager.check_ingredient(form2.cleaned_data['name']):
-                print("Add myingredient: " + str(form2.cleaned_data['name']))
+            name = form2.cleaned_data['name']
+            user_pk = request.user.pk
+            if IngredientManager.check_ingredient(name):
+                print("Add myingredient: " + str(name))
+                MyIngredientManager.add_myingredient(user_pk, name)
             else:
                 print("No ingredient found.")
-            return render(request, 'pantry.html', {'form': form, 'form2':form2})
+            return render(request, 'pantry.html', {'form': form, 'form2':form2, 'matches': MyIngredientManager.get_myingredients(user_pk)})
     else:
         form2 = AddIngredientForm()
     form = RecipeSearchForm()
-    return render(request, 'pantry.html', {'form': form, 'form2':form2})
+    form3 = UpdateMyIngredient()
+    user_pk = request.user.pk
+    return render(request, 'pantry.html', {'form': form, 'form2':form2, 'form3':form3, 'matches': MyIngredientManager.get_myingredients(user_pk)})
 
 @login_required
 def ingredients(request):

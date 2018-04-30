@@ -16,7 +16,7 @@ class IngredientManager(models.Manager):
         return ingredients
 
     def check_ingredient(ingredient):
-        return Ingredient.objects.get(name=ingredient)
+        return Ingredient.objects.filter(name=ingredient).exists()
 
     def add_ingredient(ingredient_name):
         try:
@@ -102,23 +102,38 @@ class MyIngredientManager(models.Manager):
         recipes = MyIngredient.objects.all()
         return len(recipes)
 
-    def get_myingredients():
+    def get_myingredients(user):
         # gets all ingredients
-        recipes = MyIngredient.objects.all().order_by('name')
-        return recipes
+        try:
+            curr_user = User.objects.get(pk=user)
+            recipes = MyIngredient.objects.filter(user=curr_user)
+            return recipes
+        except:
+            return []
 
-    def check_myingredient(recipe_id_name):
-        return MyIngredient.objects.filter(name=recipe_id_name).exists()
+    def check_myingredient(user, recipe_id_name):
+        try:
+            curr_user = User.objects.get(pk=user)
+            curr_recp = Ingredient.objects.get(name=ingredient_name)
+            return MyIngredient.objects.filter(user=curr_user, ingredient=curr_recp).exists()
+        except:
+            return False
 
     def add_myingredient(user, ingredient_name):
-        if MyIngredientManager.check_mini_recipe(recipe_id_name):
-            print("MiniRecipe already exists: " + (recipe_id_name))
-        else:
-            new_recipe = MyIngredient(name=recipe_name, recipe_id=recipe_id_name, img_url=recipe_img_url)
-            new_recipe.save()
+        try:
+            if not MyIngredientManager.check_myingredient(user, ingredient_name):
+                curr_user = User.objects.get(pk=user)
+                print(curr_user)
+                curr_ing = Ingredient.objects.get(name=ingredient_name)
+                print(curr_ing)
+                new_mying = MyIngredient(user=curr_user, ingredient=curr_ing)
+                new_mying.save()
+        except:
+            print("failed adding ingredient")
 
 class MyIngredient(models.Model):
     """ model to represent the ingredients for an individual """
     user = models.ForeignKey(User, related_name="myingredient_user")
     ingredient = models.ForeignKey(Ingredient, related_name="myingredient_ing")
     amount = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    measurement = models.CharField(max_length=20, default="cups")
