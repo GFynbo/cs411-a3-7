@@ -19,7 +19,11 @@
                 {{form.query}}
                 <ul class="navbar-nav px-3">
                     <li class="nav-item text-nowrap">
+                        {% if user.is_authenticated %}
+                            Welcome, {{ user }}!
+                        {% else %}
                         <a href="{% url 'login' %}" class="nav-link">Sign in</a>
+                        {% endif %}
                     </li>
                 </ul>
             </nav>

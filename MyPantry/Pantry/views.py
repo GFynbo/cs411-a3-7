@@ -7,8 +7,14 @@ from django.conf import settings
 from .forms import RecipeSearchForm, RecipeShowForm
 from .models import IngredientManager, MiniRecipeManager
 
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
 import requests
 
+
+@login_required
 def index(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':

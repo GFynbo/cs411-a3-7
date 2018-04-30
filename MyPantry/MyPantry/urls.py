@@ -16,9 +16,12 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import RedirectView
+from django.contrib.auth import views as auth_view
 
 urlpatterns = [
     url(r'^pantry/', include('Pantry.urls')),
     url(r'^$', RedirectView.as_view(url='/pantry/', permanent=True)),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),  # <--
     url(r'^admin/', admin.site.urls),
+
 ]
