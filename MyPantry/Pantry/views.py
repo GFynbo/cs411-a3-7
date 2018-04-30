@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect, render_to_resp
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 
 from django.conf import settings
 
@@ -178,6 +179,11 @@ def show_recipe(request):
     else:
         form = RecipeSearchForm()
     return render(request, 'show_recipe.html', {'form': form, 'recipeList': MiniRecipeManager.get_mini_recipes()})
+
+@login_required
+def profile(request):
+    """ view for user profile """
+    return render(request, 'profile.html', {'user':request.user})
 
 @login_required
 def logout_view(request):

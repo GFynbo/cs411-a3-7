@@ -12,17 +12,18 @@
 <div class="card-columns">
 {% for match in myrecipes %}
 <div class="card">
-<div class="card-body">
-  <h5 class="card-title">{{ match.recipe.name }}</h5>
-</div>
-<div class="card-body text-center">
-  <form action="/pantry/show_recipe/" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="recipe_id" value="{{ match.recipe.recipe_id }}" hidden>
-      <button class="btn btn-primary"><span data-feather="plus"></span> View recipe</button>
-  </form>
-</div>
-</div>
+    <img class="card-img-top" src="{{ match.recipe.img_url }}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">{{ match.recipe.name }}</h5>
+    </div>
+    <div class="card-body text-center">
+      <form action="/pantry/show_recipe/" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="recipe_id" value="{{ match.recipe.recipe_id }}" hidden>
+          <button class="btn btn-primary"><span data-feather="plus"></span> View recipe</button>
+      </form>
+    </div>
+    </div>
 {% endfor %}
 </div>
 {% else %}

@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url('profile', views.profile, name='profile'),
     url('unfavorite', views.unfavorite, name='unfavorite'),
     url('favorite', views.favorite, name='favorite'),
     url('update_ingredient', views.update_ingredient, name='update_ingredient'),

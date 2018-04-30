@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h1">User{% if user %} &mdash; {{ user }}{% endif %}</h1>
+</div>
+{% if user %}
+<div class="card text-center">
+  <div class="card-header">
+    {{ user.last_name }}, {{ user.first_name }}
+  </div>
+  <div class="card-body text-left">
+      <p>User: {{ user }}</p>
+      <p>Email: {{ user.email }}<p>
+  </div>
+  <div class="card-footer text-muted">
+    MyPantry
+  </div>
+</div>
+{% endif %}
+{% endblock %}
