@@ -86,14 +86,36 @@ def show_recipe(request):
         # check whether it's valid:
         if form.is_valid():
             recipe = form.cleaned_data['recipe_id']
+            # get yummly recipe
             query_string = 'http://api.yummly.com/v1/api/recipe/' + recipe + '?&_app_id=' + str(settings.APP_ID) + '&_app_key=' + str(settings.APP_KEY)
             response = requests.get(query_string)
             pantrydata = response.json()
             form = RecipeSearchForm()
+
+            # get yelp related restaurants (BOSTON ONLY)
+            url = "https://api.yelp.com/v3/businesses/search"
+            results = ""
+            try:
+                results = pantrydata['name']
+                print(results)
+            except:
+                results = ""
+
+            querystring = {"term":results,"latitude":"42.3605","longitude":"-71.057083"}
+
+            headers = {
+                'Authorization': "Bearer P8-sXpWc-rQuZzafffsT9-0aHs99DWGfjAuSNutjp05fqnVbPTdUNoYp9MhWSqQucma9S3qaa3jRaT6AjASBujMoU5wEW6JqqCTeh834slXvwMxffjE97bG1jHXmWnYx",
+                'Cache-Control': "no-cache",
+                'Postman-Token': "0b8dfcdd-851d-7243-07c9-f755f8fd7896"
+                }
+
+            response = requests.request("GET", url, headers=headers, params=querystring)
+            businesses = response.json()
+
             return render(
                 request,
                 'show_recipe.html',
-                {'recipe': pantrydata, 'big_image_url':pantrydata['images'][0]['hostedLargeUrl'], 'form': form}
+                {'recipe': pantrydata, 'big_image_url':pantrydata['images'][0]['hostedLargeUrl'], 'businesses':businesses['businesses'], 'form': form}
             )
     # if a GET (or any other method) we'll create a blank form
     else:

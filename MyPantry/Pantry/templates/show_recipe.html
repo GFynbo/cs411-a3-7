@@ -25,5 +25,28 @@
     Source: <a href="{{recipe.source.sourceRecipeUrl}}">{{ recipe.source.sourceDisplayName }}</a>
   </div>
 </div>
+<div class="row" style="margin-top: 25px;">
+    <h3 class="h3">Restaurants you might like...</h3>
+</div>
+<div class="row">
+{% if businesses %}
+    <div class="card-columns">
+    {% for business in businesses %}
+    <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src="{{ business.image_url }}" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{ business.name }}</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Phone: {{ business.phone }}</li>
+        <li class="list-group-item {% if business.is_closed %}bg-danger{% else %}bg-success{% endif %}">Hours: {% if business.is_closed %}CLOSED{% else %}OPEN{% endif %}</li>
+        <li class="list-group-item">Rating: {{ business.rating }}/5</li>
+        <li class="list-group-item">Reviews: {{ business.review_count }}</li>
+      </ul>
+    </div>
+    {% endfor %}
+    </div>
+{% endif %}
+</div>
 {% endif %}
 {% endblock %}
