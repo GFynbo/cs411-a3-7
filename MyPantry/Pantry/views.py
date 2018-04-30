@@ -5,8 +5,8 @@ from django.contrib.auth import logout
 
 from django.conf import settings
 
-from .forms import AddIngredientForm, RecipeSearchForm, RecipeShowForm, UpdateMyIngredient
-from .models import Ingredient, IngredientManager, MiniRecipeManager, MyIngredient, MyIngredientManager
+from .forms import AddIngredientForm, FavoriteMyRecipe, RecipeSearchForm, RecipeShowForm, UnfavoriteMyRecipe, UpdateMyIngredient
+from .models import Ingredient, IngredientManager, MiniRecipe, MiniRecipeManager, MyRecipeManager, MyIngredient, MyIngredientManager
 
 
 from django.contrib.auth.decorators import login_required
@@ -103,7 +103,36 @@ def recipes(request):
 @login_required
 def myrecipes(request):
     form = RecipeSearchForm()
-    return render(request, 'myrecipes.html', {'form': form, })
+    recipes = MyRecipeManager.get_myrecipes(user=request.user.pk)
+    return render(request, 'myrecipes.html', {'form': form, 'myrecipes':recipes})
+
+@login_required
+def favorite(request):
+    if request.method == 'POST':
+        form = FavoriteMyRecipe(request.POST)
+        user_pk = request.user.pk
+        print(form.is_valid())
+        if form.is_valid():
+            id = form.cleaned_data['recipe_id']
+            name = form.cleaned_data['recipe_name']
+            if not MyRecipeManager.check_myrecipe(user=user_pk, recp_id=id):
+                MyRecipeManager.add_myrecipe(user=user_pk, recp_id=id)
+        return redirect("/pantry/my_recipes/")
+    return redirect("/pantry/my_recipes/")
+
+@login_required
+def unfavorite(request):
+    if request.method == 'POST':
+        form = UnfavoriteMyRecipe(request.POST)
+        user_pk = request.user.pk
+        if form.is_valid():
+            id = form.cleaned_data['recipe_id']
+            print(id)
+            name = form.cleaned_data['recipe_name']
+            print(name)
+            MyRecipeManager.delete_myrecipe(user=user_pk, recp_id=id)
+        return redirect("/pantry/my_recipes/")
+    return redirect("/pantry/my_recipes/")
 
 @login_required
 def show_recipe(request):
@@ -118,13 +147,14 @@ def show_recipe(request):
             response = requests.get(query_string)
             pantrydata = response.json()
             form = RecipeSearchForm()
-
+            form_favorite = FavoriteMyRecipe()
+            form_unfavorite = FavoriteMyRecipe()
+            is_favorite = MyRecipeManager.check_myrecipe(user=request.user.pk, recp_id=recipe)
             # get yelp related restaurants (BOSTON ONLY)
             url = "https://api.yelp.com/v3/businesses/search"
             results = ""
             try:
                 results = pantrydata['name']
-                print(results)
             except:
                 results = ""
 
@@ -142,13 +172,14 @@ def show_recipe(request):
             return render(
                 request,
                 'show_recipe.html',
-                {'recipe': pantrydata, 'big_image_url':pantrydata['images'][0]['hostedLargeUrl'], 'businesses':businesses['businesses'], 'form': form}
+                {'recipe': pantrydata, 'big_image_url':pantrydata['images'][0]['hostedLargeUrl'], 'businesses':businesses['businesses'], 'form': form, 'is_favorite':is_favorite, 'form_favorite':form_favorite, 'form_unfavorite':form_unfavorite}
             )
     # if a GET (or any other method) we'll create a blank form
     else:
         form = RecipeSearchForm()
     return render(request, 'show_recipe.html', {'form': form, 'recipeList': MiniRecipeManager.get_mini_recipes()})
 
+@login_required
 def logout_view(request):
     """ logout of the account """
     logout(request)

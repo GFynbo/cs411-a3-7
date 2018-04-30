@@ -8,17 +8,25 @@
 <table class="table table-hover table-sm">
   <thead>
     <tr>
-        <th scope="col">ID</th>
         <th scope="col">Ingredient Name</th>
-        <th scope="col">Category</th>
+        <th scope="col">ID</th>
+        <th scope="col">Full link</th>
+        <th></th>
     </tr>
   </thead>
   <tbody>
 {% for recipe in recipeList %}
   <tr>
-    <td scope="row">{{ recipe.recipe_id | truncatechars:50 }}</td>
     <td>{{ recipe.name }}</td>
+    <td scope="row">{{ recipe.recipe_id | truncatechars:50 }}</td>
     <td>{{ recipe.img_url | truncatechars:25 }}</td>
+    <td>
+        <form action="/pantry/show_recipe/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="recipe_id" value="{{ recipe.recipe_id }}" hidden>
+            <button class="btn btn-primary"><span data-feather="plus"></span> View recipe</button>
+        </form>
+    </td>
     </tr>
 {% endfor %}
 </table>

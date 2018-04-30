@@ -13,3 +13,11 @@ class UpdateMyIngredient(forms.Form):
     id = forms.CharField()
     measurement = forms.CharField()
     amount = forms.DecimalField()
+
+class FavoriteMyRecipe(forms.Form):
+    recipe_id = forms.CharField()
+    recipe_name = forms.CharField()
+
+class UnfavoriteMyRecipe(forms.Form):
+    recipe_id = forms.CharField()
+    recipe_name = forms.CharField()

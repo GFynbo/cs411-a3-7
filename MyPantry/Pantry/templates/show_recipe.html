@@ -9,7 +9,7 @@
     {{ recipe.name }}
   </div>
   <div class="card-body">
-    <h5 class="card-title">{{ recipe.name }}</h5>
+    <h5 class="card-title">{{ recipe.name }} <form action="/pantry/{% if is_favorite %}unfavorite{% else %}favorite{% endif %}/" method="post">{% csrf_token %}<input type="hidden" name="recipe_id" value="{{ recipe.id }}" hidden> <input type="hidden" name="recipe_name" value="{{ recipe.name }}" hidden><button class="btn btn-primary" type="submit">{% if not is_favorite %}<span data-feather="star">{% else %}<span data-feather="check">{% endif %}</span></button></form></h5>
     <p>Yield: {{ recipe.yield }}</p>
     <p>Rating: {{ recipe.rating }}/5</p>
     <p>Total time: {{ recipe.totalTime }}</p>

@@ -137,3 +137,53 @@ class MyIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, related_name="myingredient_ing")
     amount = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     measurement = models.CharField(max_length=20, default="cups")
+
+class MyRecipeManager(models.Manager):
+    """ manager for the myingredient model """
+    def total_myrecipes():
+        recipes = MyRecipe.objects.all()
+        return len(recipes)
+
+    def get_myrecipes(user):
+        # gets all ingredients
+        try:
+            curr_user = User.objects.get(pk=user)
+            recipes = MyRecipe.objects.filter(user=curr_user).order_by('recipe')
+            return recipes
+        except:
+            return []
+
+    def check_myrecipe(user, recp_id):
+        try:
+            curr_user = User.objects.get(pk=user)
+            curr_recp = MiniRecipe.objects.get(recipe_id=recp_id)
+            return MyRecipe.objects.filter(user=curr_user, recipe=curr_recp).exists()
+        except:
+            return False
+
+    def add_myrecipe(user, recp_id):
+        try:
+            if not MyRecipeManager.check_myrecipe(user=user, recp_id=recp_id):
+                curr_user = User.objects.get(pk=user)
+                curr_rec = MiniRecipe.objects.get(recipe_id=recp_id)
+                new_mying = MyRecipe(user=curr_user, recipe=curr_rec)
+                new_mying.save()
+        except:
+            print("failed favoriting recipe")
+
+    def delete_myrecipe(user, recp_id):
+        try:
+            if MyRecipeManager.check_myrecipe(user=user, recp_id=recp_id):
+                curr_user = User.objects.get(pk=user)
+                curr_rec = MiniRecipe.objects.get(recipe_id=recp_id)
+                MyRecipe.objects.filter(user=curr_user, recipe=curr_rec).delete()
+                print("DELETED")
+            else:
+                print("WAS NOT THERE")
+        except:
+            print("failed deleting recipe")
+
+class MyRecipe(models.Model):
+    """ model to represent the ingredients for an individual """
+    user = models.ForeignKey(User, related_name="myrecipe_user")
+    recipe = models.ForeignKey(MiniRecipe, related_name="myrecipe_rec")
